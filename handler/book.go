@@ -4,47 +4,76 @@ import (
 	"fmt"
 	"net/http"
 	"pustaka-api/book"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
-func RootHandler(c *gin.Context) {
+type bookHandler struct {
+	bookService book.Service
+}
+
+func NewBookHandler(bookService book.Service) *bookHandler {
+	return &bookHandler{bookService}
+}
+
+func (h *bookHandler) GetBooks(c *gin.Context) {
+	books, err := h.bookService.FindAll()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
+	var booksResponse []book.BookResponse
+
+	for _, getBook := range books {
+		bookResponse := book.BookResponse{
+			ID:          getBook.ID,
+			Title:       getBook.Title,
+			Description: getBook.Description,
+			Price:       getBook.Price,
+			Rating:      getBook.Rating,
+		}
+		booksResponse = append(booksResponse, bookResponse)
+	}
+
 	c.JSON(200, gin.H{
-		"Message": "Pong",
+		"Data": booksResponse,
 	})
 }
 
-func HelloHandler(c *gin.Context) {
+func (h *bookHandler) Getbook(c *gin.Context) {
+	idString := c.Param("id")
+	id, _ := strconv.Atoi(idString)
+
+	getBook, err := h.bookService.FindByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
+	bookResponse := book.BookResponse{
+		ID:          getBook.ID,
+		Title:       getBook.Title,
+		Description: getBook.Description,
+		Price:       getBook.Price,
+		Rating:      getBook.Rating,
+	}
+
 	c.JSON(200, gin.H{
-		"title": "Hello World!",
+		"Data": bookResponse,
 	})
 }
 
-func BooksHandler(c *gin.Context) {
-	id := c.Param("id")
-	title := c.Param("title")
+func (h *bookHandler) PostBooksHandler(c *gin.Context) {
+	var bookRequest book.BookRequest
 
-	c.JSON(200, gin.H{
-		"id":    id,
-		"title": title,
-	})
-}
-
-func QueryHandler(c *gin.Context) {
-	title := c.Query("title")
-	price := c.Query("price")
-
-	c.JSON(200, gin.H{
-		"title": title,
-		"price": price,
-	})
-}
-
-func PostBooksHandler(c *gin.Context) {
-	var bookInput book.BookInput
-
-	err := c.ShouldBindJSON(&bookInput)
+	err := c.ShouldBindJSON(&bookRequest)
 	if err != nil {
 
 		errorMessages := []string{}
@@ -59,5 +88,13 @@ func PostBooksHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"title": bookInput.Title, "price": bookInput.Price})
+	book, err := h.bookService.Create(bookRequest)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{"Data": book})
 }
