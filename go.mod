@@ -1,4 +1,4 @@
-module pustaka-api
+module github.com/abiyyuaqzal/go-belajar-web-api
 
 go 1.17
 
