@@ -3,8 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"pustaka-api/book"
-	"pustaka-api/handler"
+
+	"github.com/abiyyuaqzal/go-belajar-web-api/book"
+	"github.com/abiyyuaqzal/go-belajar-web-api/handler"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"

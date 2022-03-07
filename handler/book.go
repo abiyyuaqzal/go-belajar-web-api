@@ -3,9 +3,9 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"pustaka-api/book"
 	"strconv"
 
+	"github.com/abiyyuaqzal/go-belajar-web-api/book"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
