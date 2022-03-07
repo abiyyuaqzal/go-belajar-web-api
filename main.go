@@ -31,9 +31,11 @@ func main() {
 
 	v1 := router.Group("/v1")
 
-	v1.GET("/books", bookHandler.GetBooks)
-	v1.GET("/books/:id", bookHandler.Getbook)
+	v1.GET("/books", bookHandler.GetBooksHandler)
+	v1.GET("/books/:id", bookHandler.GetBookHandler)
 	v1.POST("/books", bookHandler.PostBooksHandler)
+	v1.PUT("/books/:id", bookHandler.UpdateBookHandler)
+	v1.DELETE("/books/:id", bookHandler.DeleteBookHandler)
 
 	router.Run()
 

@@ -6,7 +6,7 @@ type Repository interface {
 	FindAll() ([]Book, error)
 	FindByID(ID int) (Book, error)
 	Create(book Book) (Book, error)
-	Delete(ID int) (Book, error)
+	Delete(book Book) (Book, error)
 	Update(book Book) (Book, error)
 }
 
@@ -37,10 +37,8 @@ func (r *repository) Create(book Book) (Book, error) {
 	return book, err
 }
 
-func (r *repository) Delete(ID int) (Book, error) {
-	var book Book
-
-	err := r.db.Where(ID).Delete(&book).Error
+func (r *repository) Delete(book Book) (Book, error) {
+	err := r.db.Delete(&book).Error
 	return book, err
 }
 
