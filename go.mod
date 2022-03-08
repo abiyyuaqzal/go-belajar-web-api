@@ -1,6 +1,6 @@
 module github.com/abiyyuaqzal/go-belajar-web-api
 
-// +heroku goVersion go1.17
+// +heroku goVersion go17
 
 go 1.17
 
