@@ -13,7 +13,17 @@ import (
 )
 
 func main() {
-	dsn := "root:root@tcp(127.0.0.1:3306)/pustaka-api?charset=utf8mb4&parseTime=True&loc=Local"
+	// errEnv := godotenv.Load()
+	// if errEnv != nil {
+	// 	log.Fatal("Failed to Load")
+	// }
+
+	// dbUser := os.Getenv("DB_USER")
+	// dbPass := os.Getenv("DB_PASS")
+	// dbHost := os.Getenv("DB_HOST")
+	// dbName := os.Getenv("DB_NAME")
+
+	dsn := "kodingworks:4]Ow8tb%?sRt,qZxFtr>n+6cg^3&ar|4@tcp(ls-7f1435e2ded91dacd203c6b9ccd08d46577baba1.cadoav7mk1ht.ap-southeast-1.rds.amazonaws.com:3306)/aqzal_belajar?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Db connection error")
