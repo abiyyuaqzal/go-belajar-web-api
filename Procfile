@@ -1,1 +1,1 @@
-web:go main.go
+web: go-belajar-web-api 
